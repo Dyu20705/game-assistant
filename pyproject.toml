@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "game-assistant"
+version = "0.1.0"
+description = "Local-first, coach-only rhythm-game training assistant under active development."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  { name = "Game Assistant contributors" }
+]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Environment :: Console",
+  "Intended Audience :: End Users/Desktop",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Games/Entertainment",
+]
+dependencies = []
+
+[project.scripts]
+game-assistant = "game_assistant.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["game_assistant*"]
