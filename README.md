@@ -2,7 +2,7 @@
 
 Game Assistant is a local-first, CLI-first rhythm-game training assistant under active development. It is intended to become a coach-only tool that helps players review evidence from their own play, understand weaknesses, and plan practice without playing the game for them.
 
-This repository currently contains only the Python project foundation. Functional coaching, analysis, storage, intake, recommendation, reports, and game adapters are not implemented yet.
+This repository currently contains the Python project foundation and shared domain contracts. Functional coaching, analysis algorithms, storage, intake, recommendation, reports, and game adapters are not implemented yet.
 
 ## Requirements
 
