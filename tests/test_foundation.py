@@ -11,7 +11,6 @@ from unittest import mock
 
 from game_assistant.cli import build_parser, main
 
-
 PACKAGE_BOUNDARIES = (
     "game_assistant",
     "game_assistant.cli",
@@ -53,11 +52,16 @@ class PackageImportTests(unittest.TestCase):
         for module_name in modules:
             del sys.modules[module_name]
 
-        with mock.patch("builtins.open", side_effect=AssertionError("unexpected file I/O")):
-            with mock.patch("socket.socket", side_effect=AssertionError("unexpected socket I/O")):
-                for module_name in PACKAGE_BOUNDARIES:
-                    with self.subTest(module_name=module_name):
-                        self.assertIsNotNone(importlib.import_module(module_name))
+        open_error = AssertionError("unexpected file I/O")
+        socket_error = AssertionError("unexpected socket I/O")
+
+        with (
+            mock.patch("builtins.open", side_effect=open_error),
+            mock.patch("socket.socket", side_effect=socket_error),
+        ):
+            for module_name in PACKAGE_BOUNDARIES:
+                with self.subTest(module_name=module_name):
+                    self.assertIsNotNone(importlib.import_module(module_name))
 
 
 class CliTests(unittest.TestCase):

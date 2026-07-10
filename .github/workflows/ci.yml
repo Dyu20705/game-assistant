@@ -8,13 +8,20 @@ on:
   pull_request:
     branches:
       - main
-      - dev
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test:
-    name: Python ${{ matrix.python-version }} on ${{ matrix.os }}
+  quality:
+    name: quality (${{ matrix.os }}, py${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
 
     strategy:
       fail-fast: false
@@ -33,15 +40,39 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+          cache: pip
 
-      - name: Install package
-        run: python -m pip install -e .
+      - name: Check Python environment
+        run: |
+          python --version
+          python -m pip --version
+
+      - name: Install CI dependencies
+        run: python -m pip install -e ".[ci]"
+
+      - name: Validate workflow YAML
+        run: python -c "import pathlib, yaml; yaml.safe_load(pathlib.Path('.github/workflows/ci.yml').read_text())"
+
+      - name: Check formatting
+        run: python -m ruff format --check src tests
+
+      - name: Lint
+        run: python -m ruff check src tests
+
+      - name: Type check
+        run: python -m mypy
 
       - name: Run tests
-        run: python -m unittest discover -s tests -v
+        run: python -m coverage run -m unittest discover -s tests -v
+
+      - name: Report coverage
+        run: python -m coverage report
 
       - name: Check module help
         run: python -m game_assistant --help
 
       - name: Check console help
         run: game-assistant --help
+
+      - name: Check package build
+        run: python -m pip wheel --no-deps --wheel-dir dist .
