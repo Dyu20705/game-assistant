@@ -1,1 +1,45 @@
-"""Core package boundary."""
+"""Core public contracts for Game Assistant."""
+
+from .domain import (
+    AnalysisResult,
+    CoachReport,
+    DomainValidationError,
+    EvidenceRef,
+    EvidenceSource,
+    GameId,
+    KeyMode,
+    MapMetadata,
+    PlayerProfile,
+    PracticeSession,
+    ReplayMetadata,
+    ReplaySupportStatus,
+    ScoreRecord,
+    SessionStatus,
+    TrainingPlan,
+    TrainingTask,
+    WeaknessCategory,
+    WeaknessSignal,
+    new_id,
+)
+
+__all__ = [
+    "AnalysisResult",
+    "CoachReport",
+    "DomainValidationError",
+    "EvidenceRef",
+    "EvidenceSource",
+    "GameId",
+    "KeyMode",
+    "MapMetadata",
+    "PlayerProfile",
+    "PracticeSession",
+    "ReplayMetadata",
+    "ReplaySupportStatus",
+    "ScoreRecord",
+    "SessionStatus",
+    "TrainingPlan",
+    "TrainingTask",
+    "WeaknessCategory",
+    "WeaknessSignal",
+    "new_id",
+]
